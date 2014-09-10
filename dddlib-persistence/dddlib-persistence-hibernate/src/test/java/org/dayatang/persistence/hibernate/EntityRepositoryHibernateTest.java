@@ -421,10 +421,10 @@ public class EntityRepositoryHibernateTest extends AbstractIntegrationTest {
      */
     @Test
     public void testSqlQueryGetSingleResult() {
-        String sql = "select * from dictionaries as o where o.is_disabled = false "
+        String sql = "select * from dictionaries as o where o.is_disabled = ? "
                 + "and o.category_id = ? and o.code = ?";
         SqlQuery query = new SqlQuery(repository, sql)
-                .setParameters(gender.getId(), "01")
+                .setParameters(false, gender.getId(), "01")
                 .setResultEntityClass(Dictionary.class);
         assertEquals(male, repository.getSingleResult(query));
     }
@@ -437,7 +437,7 @@ public class EntityRepositoryHibernateTest extends AbstractIntegrationTest {
         String queryString = "select count(*) from  categories o where o.name = :name";
         SqlQuery query = new SqlQuery(repository, queryString)
                 .addParameter("name", "gender");
-        assertEquals(BigInteger.ONE, repository.getSingleResult(query));
+        assertEquals(1, ((Number)repository.getSingleResult(query)).longValue());
     }
 
     /**

@@ -29,7 +29,12 @@ public class ConfigurationDbUtils {
 
 	private void createTableIfNotExists() {
 		String sql = String.format("CREATE TABLE IF NOT EXISTS %s (%s VARCHAR(255) PRIMARY KEY, %s VARCHAR(255))", tableName, keyColumn, valueColumn);
-		executeUpdate(sql);
+        //String sql = String.format("CREATE TABLE %s (%s VARCHAR(255) PRIMARY KEY, %s VARCHAR(255))", tableName, keyColumn, valueColumn);
+        //try {
+            executeUpdate(sql);
+        //} catch (Exception e) {
+            //e.printStackTrace();
+        //}
 	}
 
 	/* (non-Javadoc)
