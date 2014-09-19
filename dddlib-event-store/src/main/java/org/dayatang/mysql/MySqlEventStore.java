@@ -1,20 +1,16 @@
-package org.dayatang.event.hibernate;
+package org.dayatang.mysql;
 
 import org.dayatang.domain.event.DomainEvent;
 import org.dayatang.domain.event.EventStore;
 import org.dayatang.domain.event.StoredEvent;
-import org.dayatang.persistence.hibernate.EntityRepositoryHibernate;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by yyang on 14-9-15.
+ * Created by yyang on 14-9-16.
  */
-public class HibernateEventStore implements EventStore {
-
-    private EntityRepositoryHibernate repository;
-
+public class MySqlEventStore implements EventStore {
     @Override
     public List<StoredEvent> findStoredEventsBetween(Date occurredFrom, Date occurredTo) {
         return null;
