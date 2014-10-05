@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.dayatang.dddlib</groupId>
     <artifactId>dddlib-project</artifactId>
-    <version>4.3.6-SNAPSHOT</version>
+    <version>4.3.7-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>DDDLib Project</name>
     <url>http://www.dayatang.org/dddlib</url>
@@ -259,7 +259,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>17.0</version>
+                <version>18.0</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -575,7 +575,7 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.4</version>
                     <configuration>
-                        <locales>zh_CN</locales>
+                        <locales>en_US</locales>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -698,10 +698,32 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>2.10.1</version>
                 <configuration>
                     <minmemory>128m</minmemory>
                     <maxmemory>1024m</maxmemory>
+                    <locale>en_US</locale>
+                    <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+                    <docletArtifact>
+                        <groupId>org.umlgraph</groupId>
+                        <artifactId>umlgraph</artifactId>
+                        <version>5.6.7</version>
+                    </docletArtifact>
+                    <additionalparam>
+                        -views
+                        -inferrel
+                        -inferdep
+                        -enumerations
+                        -enumconstants
+                        -qualify
+                        -postfixpackage
+                        -collpackages java.*
+                        -hide java.*
+                        -types
+                        -visibility
+                        -outputencoding UTF-8
+                    </additionalparam>
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
                 </configuration>
             </plugin>
             <plugin>
@@ -729,12 +751,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.12.1</version>
+                <version>2.13</version>
                 <configuration>
                     <configLocation>config/sun_checks.xml</configLocation>
                 </configuration>
             </plugin>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -746,10 +767,11 @@
                     <minimumTokens>100</minimumTokens>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-changes-plugin</artifactId>
-                <version>2.10</version>
+                <version>2.11</version>
                 <reportSets>
                     <reportSet>
                         <reports>
