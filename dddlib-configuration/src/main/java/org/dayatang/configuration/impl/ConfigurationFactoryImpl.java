@@ -1,17 +1,25 @@
 package org.dayatang.configuration.impl;
 
 import org.dayatang.configuration.Configuration;
+import org.dayatang.configuration.ConfigurationException;
 import org.dayatang.configuration.ConfigurationFactory;
 import org.dayatang.configuration.WritableConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
  * Created by yyang on 14-2-5.
  */
 public class ConfigurationFactoryImpl extends ConfigurationFactory {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationFactoryImpl.class);
 
     /**
      * 从JDBC数据源中读取配置
@@ -39,8 +47,9 @@ public class ConfigurationFactoryImpl extends ConfigurationFactory {
      * @param fileName 类路径资源文件名
      * @return 可写的配置
      */
-    public WritableConfiguration fromClasspath(String fileName) {
-        return ConfigurationFileImpl.fromClasspath(fileName);
+    public Configuration fromClasspath(String fileName) {
+        InputStream in = getClass().getResourceAsStream(fileName);
+        return new ConfigurationInputStreamImpl(in);
     }
 
     /**
@@ -49,7 +58,7 @@ public class ConfigurationFactoryImpl extends ConfigurationFactory {
      * @return 可写的配置
      */
     public WritableConfiguration fromFileSystem(String fileName) {
-        return ConfigurationFileImpl.fromFileSystem(fileName);
+        return new ConfigurationFileImpl(fileName);
     }
 
     /**
@@ -59,7 +68,7 @@ public class ConfigurationFactoryImpl extends ConfigurationFactory {
      * @return 可写的配置
      */
     public WritableConfiguration fromFileSystem(String dirPath, String fileName) {
-        return ConfigurationFileImpl.fromFileSystem(dirPath, fileName);
+        return new ConfigurationFileImpl(dirPath, fileName);
     }
 
     /**
@@ -77,7 +86,13 @@ public class ConfigurationFactoryImpl extends ConfigurationFactory {
      * @return 只读的配置
      */
     public Configuration fromUrl(String url) {
-        return ConfigurationUrlImpl.fromUrl(url);
+        try {
+            return fromUrl(new URL(url));
+        } catch (MalformedURLException e) {
+            LOGGER.error("url is not correct!");
+            throw new ConfigurationException("url is not correct!");
+        }
+
     }
 
     /**
@@ -86,6 +101,20 @@ public class ConfigurationFactoryImpl extends ConfigurationFactory {
      * @return 只读的配置
      */
     public Configuration fromUrl(URL url) {
-        return ConfigurationUrlImpl.fromUrl(url);
+        if (url == null) {
+            throw new ConfigurationException("url is null!");
+        }
+        try {
+            return new ConfigurationInputStreamImpl(url.openStream());
+        } catch (IOException e) {
+            LOGGER.error("read url failure!");
+            throw new ConfigurationException("read url failure!");
+        }
+    }
+
+
+    @Override
+    public Configuration fromInputStream(InputStream in) {
+        return new ConfigurationInputStreamImpl(in);
     }
 }

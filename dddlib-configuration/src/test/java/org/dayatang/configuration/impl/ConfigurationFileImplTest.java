@@ -10,10 +10,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ConfigurationFileImplTest extends AbstractConfigurationTest {
+
+	private String fileInClass = "/conf.properties";
 	
 	@Before
 	public void setUp() throws Exception {
-		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
+		String fileName = getClass().getResource(fileInClass).getFile();
+		instance = ConfigurationFileImpl.fromFile(new File(fileName));
 	}
 
 	@After
@@ -21,31 +24,25 @@ public class ConfigurationFileImplTest extends AbstractConfigurationTest {
 	}
 
 	@Test
-	public void testFromClasspath() {
-		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
-		assertTrue(instance.getProperties().size() > 0);
-	}
-
-	@Test
 	public void testFromPathname() {
-		String pathname = getClass().getResource("/conf.properties").getFile();
-		instance = ConfigurationFileImpl.fromFileSystem(pathname);
+		String pathname = getClass().getResource(fileInClass).getFile();
+		instance = new ConfigurationFileImpl(pathname);
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
 	@Test
 	public void testFromDirAndFile() {
-		String pathname = getClass().getResource("/conf.properties").getFile();
+		String pathname = getClass().getResource(fileInClass).getFile();
 		File file = new File(pathname);
 		String dir = file.getParent();
 		String fileName = file.getName();
-		instance = ConfigurationFileImpl.fromFileSystem(dir, fileName);
+		instance = new ConfigurationFileImpl(dir, fileName);
 		assertTrue(instance.getProperties().size() > 0);
 	}
 
 	@Test
 	public void testFromFile() {
-		String pathname = getClass().getResource("/conf.properties").getFile();
+		String pathname = getClass().getResource(fileInClass).getFile();
 		File file = new File(pathname);
 		instance = ConfigurationFileImpl.fromFile(file);
 		assertTrue(instance.getProperties().size() > 0);
@@ -61,7 +58,8 @@ public class ConfigurationFileImplTest extends AbstractConfigurationTest {
 	public void testSave() {
 		instance.setString("xyz", "yyyy-MM-dd");
 		((ConfigurationFileImpl)instance).save();
-		instance = ConfigurationFileImpl.fromClasspath("/conf.properties");
+		String fileName = getClass().getResource(fileInClass).getFile();
+		instance = new ConfigurationFileImpl(new File(fileName));
 		assertEquals("yyyy-MM-dd", instance.getString("xyz"));
 	}
 

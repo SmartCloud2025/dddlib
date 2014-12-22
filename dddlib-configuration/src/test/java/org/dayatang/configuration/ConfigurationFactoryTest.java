@@ -2,7 +2,7 @@ package org.dayatang.configuration;
 
 import org.dayatang.configuration.impl.ConfigurationDbImpl;
 import org.dayatang.configuration.impl.ConfigurationFileImpl;
-import org.dayatang.configuration.impl.ConfigurationUrlImpl;
+import org.dayatang.configuration.impl.ConfigurationInputStreamImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class ConfigurationFactoryTest {
 
 	@Test
 	public void testFromClasspathString() {
-		assertTrue(instance.fromClasspath("/conf.properties") instanceof ConfigurationFileImpl);
+		assertTrue(instance.fromClasspath("/conf.properties") instanceof ConfigurationInputStreamImpl);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class ConfigurationFactoryTest {
         httpServer.mapping("/", file);
         httpServer.start();
         String url = "http://localhost:1528/";
-        assertTrue(instance.fromUrl(url) instanceof ConfigurationUrlImpl);
+        assertTrue(instance.fromUrl(url) instanceof ConfigurationInputStreamImpl);
         httpServer.shutdown();
     }
 
@@ -88,7 +88,7 @@ public class ConfigurationFactoryTest {
         httpServer.mapping("/", file);
         httpServer.start();
         URL url = new URL("http://localhost:1528/");
-        assertTrue(instance.fromUrl(url) instanceof ConfigurationUrlImpl);
+        assertTrue(instance.fromUrl(url) instanceof ConfigurationInputStreamImpl);
         httpServer.shutdown();
     }
 

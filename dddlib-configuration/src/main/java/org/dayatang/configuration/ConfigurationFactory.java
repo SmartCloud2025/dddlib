@@ -4,6 +4,7 @@ import org.dayatang.utils.Assert;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -55,7 +56,7 @@ public class ConfigurationFactory {
 	 * @param fileName 类路径资源文件名
 	 * @return 可写的配置
 	 */
-	public WritableConfiguration fromClasspath(String fileName) {
+	public Configuration fromClasspath(String fileName) {
 		return instance.fromClasspath(fileName);
 	}
 
@@ -103,6 +104,15 @@ public class ConfigurationFactory {
 	 */
 	public Configuration fromUrl(URL url) {
 		return instance.fromUrl(url);
+	}
+
+	/**
+	 * 从输入流中读取配置信息
+	 * @param in 输入流
+	 * @return 只读的配置
+	 */
+	public Configuration fromInputStream(InputStream in) {
+		return  instance.fromInputStream(in);
 	}
 	
 }
